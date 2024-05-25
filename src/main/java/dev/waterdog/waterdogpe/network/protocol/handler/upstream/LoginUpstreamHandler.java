@@ -15,6 +15,7 @@
 
 package dev.waterdog.waterdogpe.network.protocol.handler.upstream;
 
+import dev.waterdog.waterdogpe.CustomCodec;
 import dev.waterdog.waterdogpe.ProxyServer;
 import dev.waterdog.waterdogpe.WaterdogPE;
 import dev.waterdog.waterdogpe.event.defaults.PlayerAuthenticatedEvent;
@@ -100,7 +101,7 @@ public class LoginUpstreamHandler implements BedrockPacketHandler {
             return PacketSignal.HANDLED;
         }
 
-        this.session.setCodec(protocol.getCodec());
+        this.session.setCodec(CustomCodec.CODEC);
 
         if (protocol.isBefore(ProtocolVersion.MINECRAFT_PE_1_19_30)) {
             this.session.disconnect("Illegal packet");
@@ -128,6 +129,7 @@ public class LoginUpstreamHandler implements BedrockPacketHandler {
             return PacketSignal.HANDLED;
         }
 
+        this.session.setCodec(CustomCodec.CODEC);
         BedrockCodec codec = this.session.getCodec();
         if (codec == null || codec == BedrockCompat.CODEC) {
             this.session.getPeer().setProtocol(protocol);
@@ -155,7 +157,7 @@ public class LoginUpstreamHandler implements BedrockPacketHandler {
 
             // Thank you Mojang: this version includes protocol changes, but protocol version was not increased.
             if (protocol.equals(ProtocolVersion.MINECRAFT_PE_1_19_60) && handshakeEntry.getClientData().has("GameVersion") &&
-                    ProtocolVersion.MINECRAFT_PE_1_19_62.getMinecraftVersion().equals(handshakeEntry.getClientData().get("GameVersion").getAsString())) {;
+                    ProtocolVersion.MINECRAFT_PE_1_19_62.getMinecraftVersion().equals(handshakeEntry.getClientData().get("GameVersion").getAsString())) {
                 handshakeEntry.setProtocol(protocol = ProtocolVersion.MINECRAFT_PE_1_19_62);
                 this.session.getPeer().setProtocol(protocol);
             }

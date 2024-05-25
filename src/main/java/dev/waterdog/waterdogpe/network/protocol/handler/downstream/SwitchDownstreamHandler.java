@@ -136,7 +136,7 @@ public class SwitchDownstreamHandler extends AbstractDownstreamHandler {
 
         ServerTransferEvent event = new ServerTransferEvent(this.player, oldConnection.getServerInfo(), this.connection.getServerInfo());
         this.player.getProxy().getEventManager().callEvent(event);
-
+        
         LongSet blobs = this.player.getChunkBlobs();
         if (this.player.getProtocol().isBefore(ProtocolVersion.MINECRAFT_PE_1_18_30) &&
                 this.player.getLoginData().getCachePacket().isSupported() && !blobs.isEmpty()) {

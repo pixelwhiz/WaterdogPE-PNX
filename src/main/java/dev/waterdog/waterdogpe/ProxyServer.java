@@ -210,10 +210,6 @@ public class ProxyServer {
             this.logger.warning("Fast codec is disabled! This may impact the proxy performance!");
         } else {
             this.logger.info("Using fast codec for improved performance and stability!");
-            if (this.getConfiguration().injectCommands()) {
-                ProtocolCodecs.addUpdater(new CodecUpdaterCommands());
-            }
-
             for (ProtocolVersion version : ProtocolVersion.values()) {
                 version.setBedrockCodec(ProtocolCodecs.buildCodec(version.getDefaultCodec()));
             }

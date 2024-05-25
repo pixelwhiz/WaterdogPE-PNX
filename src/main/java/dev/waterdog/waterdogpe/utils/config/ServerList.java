@@ -51,10 +51,14 @@ public class ServerList {
         return Collections.unmodifiableCollection(this.serverList.values());
     }
 
-    public ServerList initEmpty() {
-        this.putIfAbsent("lobby1", new ServerEntry("lobby1",
+    public ServerList init() {
+        this.putIfAbsent("lobby", new ServerEntry("lobby",
                 new InetSocketAddress("127.0.0.1", 19133),
                 new InetSocketAddress("play.myserver.com", 19133),
+                ServerInfoMap.DEFAULT_TYPE.getIdentifier()));
+        this.putIfAbsent("server1", new ServerEntry("server1",
+                new InetSocketAddress("127.0.0.1", 19134),
+                new InetSocketAddress("play.myserver.com", 19134),
                 ServerInfoMap.DEFAULT_TYPE.getIdentifier()));
         return this;
     }

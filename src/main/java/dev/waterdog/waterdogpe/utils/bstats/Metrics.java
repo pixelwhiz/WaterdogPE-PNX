@@ -27,8 +27,6 @@ import dev.waterdog.waterdogpe.ProxyServer;
 import dev.waterdog.waterdogpe.WaterdogPE;
 import dev.waterdog.waterdogpe.utils.config.proxy.ProxyConfig;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.bstats.MetricsBase;
 import org.bstats.charts.CustomChart;
 import org.bstats.charts.DrilldownPie;

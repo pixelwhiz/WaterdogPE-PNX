@@ -15,16 +15,12 @@
 
 package dev.waterdog.waterdogpe.network.protocol.handler.downstream;
 
-import dev.waterdog.waterdogpe.command.Command;
 import dev.waterdog.waterdogpe.network.connection.client.ClientConnection;
 import dev.waterdog.waterdogpe.network.protocol.ProtocolVersion;
 import dev.waterdog.waterdogpe.network.protocol.handler.ProxyPacketHandler;
 import dev.waterdog.waterdogpe.network.protocol.rewrite.RewriteMaps;
 import dev.waterdog.waterdogpe.player.ProxiedPlayer;
 import dev.waterdog.waterdogpe.network.protocol.Signals;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandData;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumConstraint;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockBatchWrapper;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -63,41 +59,7 @@ public abstract class AbstractDownstreamHandler implements ProxyPacketHandler {
 
     @Override
     public PacketSignal handle(AvailableCommandsPacket packet) {
-        if (!this.player.getProxy().getConfiguration().injectCommands()) {
-            return PacketSignal.UNHANDLED;
-        }
-        int sizeBefore = packet.getCommands().size();
-
-        for (Command command : this.player.getProxy().getCommandMap().getCommands().values()) {
-            if (command.getPermission() == null || this.player.hasPermission(command.getPermission())) {
-                packet.getCommands().add(command.getCommandData());
-            }
-        }
-
-        if (packet.getCommands().size() == sizeBefore) {
-            return PacketSignal.UNHANDLED;
-        }
-
-        // Some server commands are missing aliases, which protocol lib doesn't like
-        ListIterator<CommandData> iterator = packet.getCommands().listIterator();
-        while (iterator.hasNext()) {
-            CommandData command = iterator.next();
-            if (command.getAliases() != null) {
-                continue;
-            }
-
-            Map<String, Set<CommandEnumConstraint>> aliases = new LinkedHashMap<>();
-            aliases.put(command.getName(), EnumSet.of(CommandEnumConstraint.ALLOW_ALIASES));
-
-            iterator.set(new CommandData(command.getName(),
-                    command.getDescription(),
-                    command.getFlags(),
-                    command.getPermission(),
-                    new CommandEnumData(command.getName() + "_aliases", aliases, false),
-                    Collections.emptyList(),
-                    command.getOverloads()));
-        }
-        return PacketSignal.HANDLED;
+        return PacketSignal.UNHANDLED;
     }
 
     @Override

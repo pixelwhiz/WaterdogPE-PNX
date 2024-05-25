@@ -1,0 +1,46 @@
+[versions]
+com-bugsnag-bugsnag = "[3.0,4.0)"
+com-google-code-gson-gson = "2.10.1"
+com-lmax-disruptor = "3.4.4"
+com-nimbusds-nimbus-jose-jwt = "9.10.1"
+netty = "4.1.101.Final"
+it-unimi-dsi-fastutil = "8.5.12"
+jline-jline = "2.14.6"
+net-cubespace-yamler-core = "2.4.1-SNAPSHOT"
+net-minecrell-terminalconsoleappender = "1.3.0"
+org-apache-commons-commons-lang3 = "3.12.0"
+org-apache-logging-log4j-log4j-api = "2.17.1"
+org-apache-logging-log4j-log4j-core = "2.17.1"
+org-bstats-bstats-base = "3.0.1"
+org-cloudburstmc-netty-netty-transport-raknet = "1.0.0.CR3-SNAPSHOT"
+org-cloudburstmc-protocol-bedrock-codec = "3.0.0.Beta2-SNAPSHOT"
+org-cloudburstmc-protocol-bedrock-connection = "3.0.0.Beta2-SNAPSHOT"
+org-jline-jline-reader = "3.23.0"
+org-jline-jline-terminal = "3.23.0"
+org-jline-jline-terminal-jna = "3.23.0"
+org-projectlombok-lombok = "1.18.32"
+org-yaml-snakeyaml = "1.31"
+
+[libraries]
+com-bugsnag-bugsnag = { module = "com.bugsnag:bugsnag", version.ref = "com-bugsnag-bugsnag" }
+com-google-code-gson-gson = { module = "com.google.code.gson:gson", version.ref = "com-google-code-gson-gson" }
+com-lmax-disruptor = { module = "com.lmax:disruptor", version.ref = "com-lmax-disruptor" }
+com-nimbusds-nimbus-jose-jwt = { module = "com.nimbusds:nimbus-jose-jwt", version.ref = "com-nimbusds-nimbus-jose-jwt" }
+io-netty-netty-transport-native-epoll = { module = "io.netty:netty-transport-native-epoll", version.ref = "netty" }
+io-netty-netty-transport-native-kqueue = { module = "io.netty:netty-transport-native-kqueue", version.ref = "netty" }
+it-unimi-dsi-fastutil = { module = "it.unimi.dsi:fastutil", version.ref = "it-unimi-dsi-fastutil" }
+jline-jline = { module = "jline:jline", version.ref = "jline-jline" }
+net-cubespace-yamler-core = { module = "net.cubespace:Yamler-Core", version.ref = "net-cubespace-yamler-core" }
+net-minecrell-terminalconsoleappender = { module = "net.minecrell:terminalconsoleappender", version.ref = "net-minecrell-terminalconsoleappender" }
+org-apache-commons-commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "org-apache-commons-commons-lang3" }
+org-apache-logging-log4j-log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "org-apache-logging-log4j-log4j-api" }
+org-apache-logging-log4j-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j-log4j-core" }
+org-bstats-bstats-base = { module = "org.bstats:bstats-base", version.ref = "org-bstats-bstats-base" }
+org-cloudburstmc-netty-netty-transport-raknet = { module = "org.cloudburstmc.netty:netty-transport-raknet", version.ref = "org-cloudburstmc-netty-netty-transport-raknet" }
+org-cloudburstmc-protocol-bedrock-codec = { module = "org.cloudburstmc.protocol:bedrock-codec", version.ref = "org-cloudburstmc-protocol-bedrock-codec" }
+org-cloudburstmc-protocol-bedrock-connection = { module = "org.cloudburstmc.protocol:bedrock-connection", version.ref = "org-cloudburstmc-protocol-bedrock-connection" }
+org-jline-jline-reader = { module = "org.jline:jline-reader", version.ref = "org-jline-jline-reader" }
+org-jline-jline-terminal = { module = "org.jline:jline-terminal", version.ref = "org-jline-jline-terminal" }
+org-jline-jline-terminal-jna = { module = "org.jline:jline-terminal-jna", version.ref = "org-jline-jline-terminal-jna" }
+org-projectlombok-lombok = { module = "org.projectlombok:lombok", version.ref = "org-projectlombok-lombok" }
+org-yaml-snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "org-yaml-snakeyaml" }

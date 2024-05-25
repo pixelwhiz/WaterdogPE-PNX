@@ -39,15 +39,15 @@ public class ProxyConfig extends YamlConfig {
 
     @Path("listener.motd")
     @Comment("The Motd which will be displayed in the server tab of a player and returned during ping")
-    private String motd = "§bWaterdog§3PE";
+    private String motd = "§bWaterdog-PNX §3PE";
 
     @Path("listener.name")
     @Comment("The name that is shown up in the player list (pause menu)")
-    private String name = "§bWaterdog§3PE";
+    private String name = "§bWaterdog-PNX §3PE";
 
     @Path("listener.priorities")
     @Comment("The server priority list. If not changed by plugins, the proxy will connect the player to the first of those servers")
-    private List<String> priorities = new ArrayList<>(Collections.singletonList("lobby1"));
+    private List<String> priorities = new ArrayList<>(Collections.singletonList("lobby"));
 
     @Path("listener.host")
     @Comment("The address to bind the server to")
@@ -71,7 +71,7 @@ public class ProxyConfig extends YamlConfig {
             "address field is formatted using ip:port",
             "publicAddress is optional and can be set to the ip players can directly connect through"
     })
-    private ServerList serverList = new ServerList().initEmpty();
+    private ServerList serverList = new ServerList().init();
 
     @Path("network_settings")
     @Comment("Connection and security related settings. Do NOT edit unless you know what you are doing!")
@@ -115,7 +115,7 @@ public class ProxyConfig extends YamlConfig {
     @Path("use_login_extras")
     @Accessors(fluent = true)
     @Comment("If enabled, the proxy will pass information like XUID or IP to the downstream server using custom fields in the LoginPacket")
-    private boolean useLoginExtras = false;
+    private boolean useLoginExtras = true;
 
     @Path("replace_username_spaces")
     @Comment("Replaces username spaces with underscores if enabled")
@@ -130,11 +130,6 @@ public class ProxyConfig extends YamlConfig {
     @Accessors(fluent = true)
     @Comment("If enabled, when receiving a McpeTransferPacket, the proxy will check if the target server is in the downstream list, and if yes, use the fast transfer mechanism")
     private boolean useFastTransfer = true;
-
-    @Path("inject_proxy_commands")
-    @Accessors(fluent = true)
-    @Comment("If enabled, the proxy will inject all the proxy commands in the AvailableCommandsPacket, enabling autocompletion")
-    private boolean injectCommands = true;
 
     @Path("compression")
     @Comments({
@@ -167,7 +162,7 @@ public class ProxyConfig extends YamlConfig {
 
     @Path("force_server_packs")
     @Comment("If enabled, the client will be forced to accept server-sided resource packs")
-    private boolean forceServerPacks = false;
+    private boolean forceServerPacks = true;
 
     @Path("pack_cache_size")
     @Comment("You can set maximum pack size in MB to be cached.")

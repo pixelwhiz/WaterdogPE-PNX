@@ -1,12 +1,6 @@
 name: Build and Publish
 
-on:
-  workflow_dispatch:
-  push:
-    tags-ignore:
-      - '**'
-    branches:
-      - '**'
+on: []
 
 jobs:
   build:
