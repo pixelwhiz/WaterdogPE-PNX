@@ -62,5 +62,35 @@ public class NetworkSettings extends YamlConfig {
     @Path("max_decompressed_bytes")
     @Accessors(fluent = true)
     @Comment("The maximum number of compressed bytes.")
-    private long maxDecompressedBytes = 10485760 * 100;
+    private int maxDecompressedBytes = 1024 * 1024 * 100;//100M
+
+    @Path("max_bytearray_size")
+    @Accessors(fluent = true)
+    @Comment("The maximum bytes of bytearray.")
+    private int maxByteArraySize = 1024 * 1024 * 50;
+
+    @Path("max_list_size")
+    @Accessors(fluent = true)
+    @Comment("The maximum bytes of list.")
+    private int maxListSize = 1024 * 1024 * 50;
+
+    @Path("max_network_nbt_size")
+    @Accessors(fluent = true)
+    @Comment("The maximum bytes of network_nbt.")
+    private int maxNetworkNBTSize = 1024 * 1024 * 50;
+
+    @Path("max_item_nbt_size")
+    @Accessors(fluent = true)
+    @Comment("The maximum bytes of item_nbt.")
+    private int maxItemNBTSize = 1024 * 1024 * 50;
+
+    @Path("max_string_size")
+    @Accessors(fluent = true)
+    @Comment("The maximum bytes of string.")
+    private int maxStringLength = 1024 * 1024 * 50;
+
+    @Path("skin_max_byte_size")
+    @Accessors(fluent = true)
+    @Comment("The maximum bytes of skin.")
+    private int maxSkinLength = 1024 * 1024 * 50;
 }

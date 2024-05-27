@@ -48,11 +48,11 @@ public class CustomNetworkSettings extends Bedrock_v671 {
             .build();
 
     public static final EncodingSettings SETTINGS = EncodingSettings.builder()
-            .maxByteArraySize(1024 * 1024 * 1024)//1G
-            .maxListSize(1024 * 1024 * 1024)//1G
-            .maxNetworkNBTSize(1024 * 1024 * 1024)//1G
-            .maxItemNBTSize(1024 * 1024 * 1024)//1G
-            .maxStringLength(1024 * 1024 * 1024)//1G
+            .maxByteArraySize(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxByteArraySize())
+            .maxListSize(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxListSize())
+            .maxNetworkNBTSize(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxNetworkNBTSize())
+            .maxItemNBTSize(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxItemNBTSize())
+            .maxStringLength(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxStringLength())
             .build();
 
     private static class CustomBedrockCodecHelper_v575 extends BedrockCodecHelper_v575 {
@@ -60,7 +60,16 @@ public class CustomNetworkSettings extends Bedrock_v671 {
             super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins);
         }
 
-        public static final int CUSTOM_MODEL_SIZE = 50 * 1024 * 1024;
+        public final int CUSTOM_MODEL_SIZE = ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxSkinLength();
+
+        @Override
+        public AnimationData readAnimationData(ByteBuf buffer) {
+            ImageData image = this.readImage(buffer, CUSTOM_MODEL_SIZE);
+            AnimatedTextureType textureType = TEXTURE_TYPES[buffer.readIntLE()];
+            float frames = buffer.readFloatLE();
+            AnimationExpressionType expressionType = EXPRESSION_TYPES[buffer.readIntLE()];
+            return new AnimationData(image, textureType, frames, expressionType);
+        }
 
         @Override
         public SerializedSkin readSkin(ByteBuf buffer) {
