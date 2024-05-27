@@ -25,6 +25,7 @@ import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class CustomNetworkSettings extends Bedrock_v671 {
 
@@ -47,7 +48,7 @@ public class CustomNetworkSettings extends Bedrock_v671 {
             .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .build();
 
-    public static final EncodingSettings SETTINGS = EncodingSettings.builder()
+    public static final Supplier<EncodingSettings> SETTINGS = () -> EncodingSettings.builder()
             .maxByteArraySize(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxByteArraySize())
             .maxListSize(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxListSize())
             .maxNetworkNBTSize(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxNetworkNBTSize())

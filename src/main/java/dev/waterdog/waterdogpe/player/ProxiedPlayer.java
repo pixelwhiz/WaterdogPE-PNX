@@ -270,7 +270,7 @@ public class ProxiedPlayer implements CommandSender {
 
         BedrockCodecHelper codecHelper = this.connection.getPeer().getCodecHelper();
         connection.setCodecHelper(this.getProtocol().getCodec(), codecHelper);
-        codecHelper.setEncodingSettings(CustomNetworkSettings.SETTINGS);
+        codecHelper.setEncodingSettings(CustomNetworkSettings.SETTINGS.get());
 
         BedrockPacketHandler handler;
         if (this.clientConnection == null) {
