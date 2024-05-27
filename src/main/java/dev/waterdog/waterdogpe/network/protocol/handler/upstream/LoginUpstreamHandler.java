@@ -15,21 +15,19 @@
 
 package dev.waterdog.waterdogpe.network.protocol.handler.upstream;
 
-import dev.waterdog.waterdogpe.CustomCodec;
 import dev.waterdog.waterdogpe.ProxyServer;
 import dev.waterdog.waterdogpe.WaterdogPE;
 import dev.waterdog.waterdogpe.event.defaults.PlayerAuthenticatedEvent;
 import dev.waterdog.waterdogpe.network.connection.codec.compression.CompressionType;
 import dev.waterdog.waterdogpe.network.connection.peer.BedrockServerSession;
 import dev.waterdog.waterdogpe.network.protocol.ProtocolVersion;
-import dev.waterdog.waterdogpe.network.protocol.user.LoginData;
 import dev.waterdog.waterdogpe.network.protocol.user.HandshakeEntry;
 import dev.waterdog.waterdogpe.network.protocol.user.HandshakeUtils;
+import dev.waterdog.waterdogpe.network.protocol.user.LoginData;
 import dev.waterdog.waterdogpe.player.ProxiedPlayer;
 import dev.waterdog.waterdogpe.security.SecurityManager;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.compat.BedrockCompat;
-import org.cloudburstmc.protocol.bedrock.packet.BedrockPacketHandler;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -101,7 +99,7 @@ public class LoginUpstreamHandler implements BedrockPacketHandler {
             return PacketSignal.HANDLED;
         }
 
-        this.session.setCodec(CustomCodec.CODEC);
+        this.session.setCodec(protocol.getCodec());
 
         if (protocol.isBefore(ProtocolVersion.MINECRAFT_PE_1_19_30)) {
             this.session.disconnect("Illegal packet");
@@ -129,7 +127,6 @@ public class LoginUpstreamHandler implements BedrockPacketHandler {
             return PacketSignal.HANDLED;
         }
 
-        this.session.setCodec(CustomCodec.CODEC);
         BedrockCodec codec = this.session.getCodec();
         if (codec == null || codec == BedrockCompat.CODEC) {
             this.session.getPeer().setProtocol(protocol);

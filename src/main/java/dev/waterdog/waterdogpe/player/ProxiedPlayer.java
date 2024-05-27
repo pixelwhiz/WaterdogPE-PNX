@@ -15,39 +15,44 @@
 
 package dev.waterdog.waterdogpe.player;
 
-import dev.waterdog.waterdogpe.network.connection.codec.compression.CompressionType;
-import dev.waterdog.waterdogpe.network.connection.handler.ReconnectReason;
-import dev.waterdog.waterdogpe.network.connection.peer.BedrockServerSession;
-import dev.waterdog.waterdogpe.network.connection.client.ClientConnection;
-import dev.waterdog.waterdogpe.network.protocol.handler.PluginPacketHandler;
-import dev.waterdog.waterdogpe.network.protocol.handler.downstream.CompressionInitHandler;
-import dev.waterdog.waterdogpe.network.protocol.user.LoginData;
-import dev.waterdog.waterdogpe.network.protocol.user.Platform;
-import dev.waterdog.waterdogpe.network.protocol.handler.downstream.InitialHandler;
-import dev.waterdog.waterdogpe.network.protocol.handler.downstream.SwitchDownstreamHandler;
-import org.cloudburstmc.protocol.bedrock.data.ScoreInfo;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginType;
-import org.cloudburstmc.protocol.bedrock.packet.*;
+import dev.waterdog.waterdogpe.CustomNetworkSettings;
 import dev.waterdog.waterdogpe.ProxyServer;
 import dev.waterdog.waterdogpe.command.CommandSender;
 import dev.waterdog.waterdogpe.event.defaults.*;
 import dev.waterdog.waterdogpe.logger.MainLogger;
-import dev.waterdog.waterdogpe.network.serverinfo.ServerInfo;
+import dev.waterdog.waterdogpe.network.connection.client.ClientConnection;
+import dev.waterdog.waterdogpe.network.connection.codec.compression.CompressionType;
+import dev.waterdog.waterdogpe.network.connection.handler.ReconnectReason;
+import dev.waterdog.waterdogpe.network.connection.peer.BedrockServerSession;
 import dev.waterdog.waterdogpe.network.protocol.ProtocolVersion;
+import dev.waterdog.waterdogpe.network.protocol.handler.PluginPacketHandler;
+import dev.waterdog.waterdogpe.network.protocol.handler.downstream.CompressionInitHandler;
+import dev.waterdog.waterdogpe.network.protocol.handler.downstream.InitialHandler;
+import dev.waterdog.waterdogpe.network.protocol.handler.downstream.SwitchDownstreamHandler;
+import dev.waterdog.waterdogpe.network.protocol.handler.upstream.ConnectedUpstreamHandler;
+import dev.waterdog.waterdogpe.network.protocol.handler.upstream.ResourcePacksHandler;
 import dev.waterdog.waterdogpe.network.protocol.rewrite.RewriteMaps;
 import dev.waterdog.waterdogpe.network.protocol.rewrite.types.RewriteData;
-import dev.waterdog.waterdogpe.network.protocol.handler.upstream.ResourcePacksHandler;
-import dev.waterdog.waterdogpe.network.protocol.handler.upstream.ConnectedUpstreamHandler;
+import dev.waterdog.waterdogpe.network.protocol.user.LoginData;
+import dev.waterdog.waterdogpe.network.protocol.user.Platform;
+import dev.waterdog.waterdogpe.network.serverinfo.ServerInfo;
 import dev.waterdog.waterdogpe.utils.types.Permission;
 import dev.waterdog.waterdogpe.utils.types.TextContainer;
 import dev.waterdog.waterdogpe.utils.types.TranslationContainer;
 import it.unimi.dsi.fastutil.longs.*;
 import it.unimi.dsi.fastutil.objects.*;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
+import org.cloudburstmc.protocol.bedrock.data.ScoreInfo;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginType;
+import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.Preconditions;
 
 import java.net.InetSocketAddress;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -263,8 +268,9 @@ public class ProxiedPlayer implements CommandSender {
 
         this.setPendingConnection(connection);
 
-        connection.setCodecHelper(this.getProtocol().getCodec(),
-                this.connection.getPeer().getCodecHelper());
+        BedrockCodecHelper codecHelper = this.connection.getPeer().getCodecHelper();
+        connection.setCodecHelper(this.getProtocol().getCodec(), codecHelper);
+        codecHelper.setEncodingSettings(CustomNetworkSettings.SETTINGS);
 
         BedrockPacketHandler handler;
         if (this.clientConnection == null) {
@@ -367,7 +373,7 @@ public class ProxiedPlayer implements CommandSender {
      *
      * @param oldServer server from which was player disconnected.
      * @param reason    disconnected reason.
-     * @param message    disconnected message.
+     * @param message   disconnected message.
      * @return if connection to downstream was successful.
      */
     public boolean sendToFallback(ServerInfo oldServer, ReconnectReason reason, String message) {
@@ -622,7 +628,7 @@ public class ProxiedPlayer implements CommandSender {
     /**
      * Sends a toast notification with a message to the player
      *
-     * @param title the notification title
+     * @param title   the notification title
      * @param content the message content
      */
     public void sendToastMessage(String title, String content) {

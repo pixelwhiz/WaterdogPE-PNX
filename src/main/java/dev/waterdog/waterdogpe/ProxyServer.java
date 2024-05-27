@@ -35,7 +35,6 @@ import dev.waterdog.waterdogpe.network.connection.handler.IJoinHandler;
 import dev.waterdog.waterdogpe.network.connection.handler.IReconnectHandler;
 import dev.waterdog.waterdogpe.network.protocol.ProtocolCodecs;
 import dev.waterdog.waterdogpe.network.protocol.ProtocolVersion;
-import dev.waterdog.waterdogpe.network.protocol.updaters.CodecUpdaterCommands;
 import dev.waterdog.waterdogpe.network.serverinfo.ServerInfo;
 import dev.waterdog.waterdogpe.network.serverinfo.ServerInfoMap;
 import dev.waterdog.waterdogpe.packs.PackManager;
@@ -137,6 +136,8 @@ public class ProxyServer {
         this.configurationManager.loadProxyConfig();
         this.configurationManager.loadLanguage();
         this.errorReporting = new ErrorReporting(this);
+
+        System.setProperty("bedrock.maxDecompressedBytes", String.valueOf(this.getNetworkSettings().maxDecompressedBytes()));//10M * 100
 
         if (!this.getNetworkSettings().enableIpv6()) {
             // Some devices and networks may not support IPv6
