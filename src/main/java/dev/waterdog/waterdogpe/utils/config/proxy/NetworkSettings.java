@@ -93,4 +93,9 @@ public class NetworkSettings extends YamlConfig {
     @Accessors(fluent = true)
     @Comment("The maximum bytes of skin.")
     private int maxSkinLength = 1024 * 1024 * 50;
+
+    @Path("packet_limit")
+    @Accessors(fluent = true)
+    @Comment("The maximum number per section of packet.")
+    private int packetLimit = 240;
 }
