@@ -26,6 +26,7 @@ import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class CustomNetworkSettings extends Bedrock_v685 {
 
@@ -93,6 +94,15 @@ public class CustomNetworkSettings extends Bedrock_v685 {
             .deregisterPacket(TickSyncPacket.class) // this packet is now deprecated
             .build();
 
+
+    public static final Supplier<EncodingSettings> SETTINGS = () -> EncodingSettings.builder()
+            .maxByteArraySize(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxByteArraySize())
+            .maxListSize(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxListSize())
+            .maxNetworkNBTSize(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxNetworkNBTSize())
+            .maxItemNBTSize(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxItemNBTSize())
+            .maxStringLength(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxStringLength())
+            .build();
+    
     private static class CustomBedrockCodecHelper_v575 extends BedrockCodecHelper_v575 {
         public CustomBedrockCodecHelper_v575(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes, TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
             super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins);
