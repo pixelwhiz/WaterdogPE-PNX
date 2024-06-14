@@ -22,7 +22,7 @@ public class VersionInfo {
 
     public static final boolean DEFAULT_DEBUG = true;
 
-    private final String baseVersion = "2.0.5-PNX";
+    private final String baseVersion = "2.0.6-PNX";
     private final String buildVersion = "#build";
     private final String author = "WaterdogTEAM";
     private final int metricsId = 15678;

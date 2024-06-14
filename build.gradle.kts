@@ -42,7 +42,7 @@ dependencies {
 }
 
 group = "dev.waterdog.waterdogpe"
-version = "2.0.5-SNAPSHOT"
+version = "2.0.6-SNAPSHOT"
 description = "waterdog"
 java.sourceCompatibility = JavaVersion.VERSION_21
 java.targetCompatibility = JavaVersion.VERSION_21
