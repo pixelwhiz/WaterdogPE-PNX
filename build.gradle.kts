@@ -33,6 +33,7 @@ dependencies {
     implementation(libs.org.jline.jline.terminal.jna)
     implementation(libs.org.jline.jline.reader)
     implementation(libs.net.minecrell.terminalconsoleappender)
+//    implementation("org.cloudburstmc.protocol:bedrock-connection:3.0.0.Beta2-SNAPSHOT")
     implementation(libs.org.cloudburstmc.protocol.bedrock.codec)
     implementation(libs.org.cloudburstmc.protocol.bedrock.connection)
     implementation(libs.org.cloudburstmc.netty.netty.transport.raknet)
@@ -42,7 +43,7 @@ dependencies {
 }
 
 group = "dev.waterdog.waterdogpe"
-version = "2.0.6-SNAPSHOT"
+version = "2.0.7-SNAPSHOT"
 description = "waterdog"
 java.sourceCompatibility = JavaVersion.VERSION_21
 java.targetCompatibility = JavaVersion.VERSION_21

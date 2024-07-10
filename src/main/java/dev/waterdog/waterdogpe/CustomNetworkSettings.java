@@ -36,8 +36,8 @@ public class CustomNetworkSettings extends Bedrock_v685 {
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v671.SOUND_EVENTS
             .toBuilder()
-            .insert(516, SoundEvent.TRAIL_SPAWNER_CHARGE_ACTIVATE)
-            .insert(517, SoundEvent.TRAIL_SPAWNER_AMBIENT_OMINOUS)
+            .insert(516, SoundEvent.TRIAL_SPAWNER_CHARGE_ACTIVATE)
+            .insert(517, SoundEvent.TRIAL_SPAWNER_AMBIENT_OMINOUS)
             .insert(518, SoundEvent.OMINOUS_ITEM_SPAWNER_SPAWN_ITEM)
             .insert(519, SoundEvent.OMINOUS_BOTTLE_END_USE)
             .replace(521, SoundEvent.OMINOUS_ITEM_SPAWNER_SPAWN_ITEM_BEGIN)
@@ -75,8 +75,8 @@ public class CustomNetworkSettings extends Bedrock_v685 {
 
     public static final BedrockCodec CODEC = Bedrock_v671.CODEC.toBuilder()
             .raknetProtocolVersion(11)
-            .protocolVersion(685)
-            .minecraftVersion("1.21.0")
+            .protocolVersion(686)
+            .minecraftVersion("1.21.2")
             .helper(() -> new CustomBedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
@@ -102,7 +102,7 @@ public class CustomNetworkSettings extends Bedrock_v685 {
             .maxItemNBTSize(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxItemNBTSize())
             .maxStringLength(ProxyServer.getInstance().getConfiguration().getNetworkSettings().maxStringLength())
             .build();
-    
+
     private static class CustomBedrockCodecHelper_v575 extends BedrockCodecHelper_v575 {
         public CustomBedrockCodecHelper_v575(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes, TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
             super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins);
