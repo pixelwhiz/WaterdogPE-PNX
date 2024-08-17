@@ -14,6 +14,9 @@ import org.cloudburstmc.protocol.bedrock.codec.v594.serializer.AvailableCommands
 import org.cloudburstmc.protocol.bedrock.codec.v671.Bedrock_v671;
 import org.cloudburstmc.protocol.bedrock.codec.v685.Bedrock_v685;
 import org.cloudburstmc.protocol.bedrock.codec.v685.serializer.*;
+import org.cloudburstmc.protocol.bedrock.codec.v686.Bedrock_v686;
+import org.cloudburstmc.protocol.bedrock.codec.v712.Bedrock_v712;
+import org.cloudburstmc.protocol.bedrock.codec.v712.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
@@ -28,70 +31,51 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class CustomNetworkSettings extends Bedrock_v685 {
+public class CustomNetworkSettings extends Bedrock_v712 {
 
-    protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v671.PARTICLE_TYPES.toBuilder()
-            .insert(93, ParticleType.OMINOUS_ITEM_SPAWNER)
-            .build();
-
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v671.SOUND_EVENTS
+    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v686.SOUND_EVENTS
             .toBuilder()
-            .insert(516, SoundEvent.TRIAL_SPAWNER_CHARGE_ACTIVATE)
-            .insert(517, SoundEvent.TRIAL_SPAWNER_AMBIENT_OMINOUS)
-            .insert(518, SoundEvent.OMINOUS_ITEM_SPAWNER_SPAWN_ITEM)
-            .insert(519, SoundEvent.OMINOUS_BOTTLE_END_USE)
-            .replace(521, SoundEvent.OMINOUS_ITEM_SPAWNER_SPAWN_ITEM_BEGIN)
-            .insert(523, SoundEvent.APPLY_EFFECT_BAD_OMEN)
-            .insert(524, SoundEvent.APPLY_EFFECT_RAID_OMEN)
-            .insert(525, SoundEvent.APPLY_EFFECT_TRIAL_OMEN)
-            .insert(526, SoundEvent.OMINOUS_ITEM_SPAWNER_ABOUT_TO_SPAWN_ITEM)
-            .insert(527, SoundEvent.RECORD_CREATOR)
-            .insert(528, SoundEvent.RECORD_CREATOR_MUSIC_BOX)
-            .insert(529, SoundEvent.RECORD_PRECIPICE)
-            .insert(530, SoundEvent.UNDEFINED)
+            .insert(510, SoundEvent.IMITATE_BOGGED)
+            .replace(530, SoundEvent.VAULT_REJECT_REWARDED_PLAYER)
+            .insert(531, SoundEvent.UNDEFINED)
             .build();
 
-    protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v671.COMMAND_PARAMS.toBuilder()
-            .shift(86, 4)
-            .insert(86, CommandParam.CODE_BUILDER_ARG)
-            .insert(87, CommandParam.CODE_BUILDER_ARGS)
-            .insert(88, CommandParam.CODE_BUILDER_SELECT_PARAM)
-            .insert(89, CommandParam.CODE_BUILDER_SELECTOR)
-            .build();
-
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v671.ENTITY_DATA
+    protected static final TypeMap<ItemStackRequestActionType> ITEM_STACK_REQUEST_TYPES = Bedrock_v686.ITEM_STACK_REQUEST_TYPES
             .toBuilder()
-            .insert(EntityDataTypes.VISIBLE_MOB_EFFECTS, 131, EntityDataFormat.NBT) // TODO check data format
+            .remove(7)
+            .remove(8)
             .build();
 
-    protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v671.LEVEL_EVENTS.toBuilder()
-            .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
-            .replace(LEVEL_EVENT_BLOCK + 115, LevelEvent.PARTICLE_TRIAL_SPAWNER_DETECTION_CHARGED)
-            .insert(LEVEL_EVENT_BLOCK + 116, LevelEvent.PARTICLE_TRIAL_SPAWNER_BECOME_CHARGED)
-            .insert(LEVEL_EVENT_BLOCK + 117, LevelEvent.ALL_PLAYERS_SLEEPING)
-            .insert(9814, LevelEvent.ANIMATION_SPAWN_COBWEB)
-            .insert(9815, LevelEvent.PARTICLE_SMASH_ATTACK_GROUND_DUST)
+    protected static final TypeMap<ContainerSlotType> CONTAINER_SLOT_TYPES = Bedrock_v686.CONTAINER_SLOT_TYPES
+            .toBuilder()
+            .insert(63, ContainerSlotType.DYNAMIC_CONTAINER)
             .build();
 
-    public static final BedrockCodec CODEC = Bedrock_v671.CODEC.toBuilder()
+    public static final BedrockCodec CODEC = Bedrock_v686.CODEC.toBuilder()
             .raknetProtocolVersion(11)
-            .protocolVersion(686)
-            .minecraftVersion("1.21.2")
+            .protocolVersion(712)
+            .minecraftVersion("1.21.20")
             .helper(() -> new CustomBedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
-            .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
-            .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
-            .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v594(COMMAND_PARAMS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .updateSerializer(ContainerClosePacket.class, ContainerCloseSerializer_v685.INSTANCE)
-            .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v685.INSTANCE)
-            .updateSerializer(CodeBuilderSourcePacket.class, CodeBuilderSourceSerializer_v685.INSTANCE)
-            .updateSerializer(EventPacket.class, EventSerializer_v685.INSTANCE)
-            .updateSerializer(StartGamePacket.class, StartGameSerializer_v685.INSTANCE)
-            .updateSerializer(TextPacket.class, TextSerializer_v685.INSTANCE)
-            .registerPacket(AwardAchievementPacket::new, AwardAchievementSerializer_v685.INSTANCE, 309, PacketRecipient.CLIENT)
-            .deregisterPacket(TickSyncPacket.class) // this packet is now deprecated
+            .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v712.INSTANCE)
+            .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v712.INSTANCE)
+            .updateSerializer(ChangeDimensionPacket.class, ChangeDimensionSerializer_v712.INSTANCE)
+            .updateSerializer(DisconnectPacket.class, DisconnectSerializer_v712.INSTANCE)
+            .updateSerializer(EditorNetworkPacket.class, EditorNetworkSerializer_v712.INSTANCE)
+            .updateSerializer(InventoryContentPacket.class, InventoryContentSerializer_v712.INSTANCE)
+            .updateSerializer(InventorySlotPacket.class, InventorySlotSerializer_v712.INSTANCE)
+            .updateSerializer(MobArmorEquipmentPacket.class, MobArmorEquipmentSerializer_v712.INSTANCE)
+            .updateSerializer(PlayerArmorDamagePacket.class, PlayerArmorDamageSerializer_v712.INSTANCE)
+            .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v712.INSTANCE)
+            .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v712.INSTANCE)
+            .updateSerializer(SetTitlePacket.class, SetTitleSerializer_v712.INSTANCE)
+            .updateSerializer(StopSoundPacket.class, StopSoundSerializer_v712.INSTANCE)
+            .registerPacket(ServerboundLoadingScreenPacket::new, ServerboundLoadingScreenSerializer_v712.INSTANCE, 312, PacketRecipient.SERVER)
+            .registerPacket(JigsawStructureDataPacket::new, JigsawStructureDataSerializer_v712.INSTANCE, 313, PacketRecipient.CLIENT)
+            .registerPacket(CurrentStructureFeaturePacket::new, CurrentStructureFeatureSerializer_v712.INSTANCE, 314, PacketRecipient.CLIENT)
+            .registerPacket(ServerboundDiagnosticsPacket::new, ServerboundDiagnosticsSerializer_v712.INSTANCE, 315, PacketRecipient.SERVER)
             .build();
 
 
