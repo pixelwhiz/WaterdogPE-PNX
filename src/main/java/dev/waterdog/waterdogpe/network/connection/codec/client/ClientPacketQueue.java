@@ -60,16 +60,16 @@ public class ClientPacketQueue extends ChannelDuplexHandler {
     }
 
     @Override
-    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        if (msg instanceof BedrockPacket packet) {
-            this.packetQueue.add(BedrockPacketWrapper.create(0, 0, 0, ReferenceCountUtil.retain(packet), null));
-        } else if (msg instanceof BedrockPacketWrapper packet) {
-            this.packetQueue.add(ReferenceCountUtil.retain(packet));
-        } else if (msg instanceof BedrockBatchWrapper) {
-            this.onTick(ctx);
-            ctx.write(msg, promise);
-        } else {
-            ctx.write(msg, promise);
+    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
+        switch (msg) {
+            case BedrockPacket packet ->
+                    this.packetQueue.add(BedrockPacketWrapper.create(0, 0, 0, ReferenceCountUtil.retain(packet), null));
+            case BedrockPacketWrapper packet -> this.packetQueue.add(ReferenceCountUtil.retain(packet));
+            case BedrockBatchWrapper ignored -> {
+                this.onTick(ctx);
+                ctx.write(msg, promise);
+            }
+            case null, default -> ctx.write(msg, promise);
         }
     }
 }

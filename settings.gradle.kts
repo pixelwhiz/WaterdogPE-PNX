@@ -1,1 +1,1 @@
-rootProject.name = "waterdog-pnx"
+rootProject.name = "Waterdog"

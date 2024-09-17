@@ -17,6 +17,8 @@ import org.cloudburstmc.protocol.bedrock.codec.v685.serializer.*;
 import org.cloudburstmc.protocol.bedrock.codec.v686.Bedrock_v686;
 import org.cloudburstmc.protocol.bedrock.codec.v712.Bedrock_v712;
 import org.cloudburstmc.protocol.bedrock.codec.v712.serializer.*;
+import org.cloudburstmc.protocol.bedrock.codec.v729.Bedrock_v729;
+import org.cloudburstmc.protocol.bedrock.codec.v729.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
@@ -31,13 +33,14 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class CustomNetworkSettings extends Bedrock_v712 {
+public class CustomNetworkSettings extends Bedrock_v729 {
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v686.SOUND_EVENTS
+    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v712.SOUND_EVENTS
             .toBuilder()
-            .insert(510, SoundEvent.IMITATE_BOGGED)
-            .replace(530, SoundEvent.VAULT_REJECT_REWARDED_PLAYER)
-            .insert(531, SoundEvent.UNDEFINED)
+            .replace(531, SoundEvent.IMITATE_DROWNED)
+            // skip 532
+            .insert(533, SoundEvent.BUNDLE_INSERT_FAILED)
+            .insert(534, SoundEvent.UNDEFINED)
             .build();
 
     protected static final TypeMap<ItemStackRequestActionType> ITEM_STACK_REQUEST_TYPES = Bedrock_v686.ITEM_STACK_REQUEST_TYPES
@@ -53,29 +56,21 @@ public class CustomNetworkSettings extends Bedrock_v712 {
 
     public static final BedrockCodec CODEC = Bedrock_v686.CODEC.toBuilder()
             .raknetProtocolVersion(11)
-            .protocolVersion(712)
-            .minecraftVersion("1.21.20")
+            .protocolVersion(729)
+            .minecraftVersion("1.21.30")
             .helper(() -> new CustomBedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v712.INSTANCE)
-            .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v712.INSTANCE)
-            .updateSerializer(ChangeDimensionPacket.class, ChangeDimensionSerializer_v712.INSTANCE)
-            .updateSerializer(DisconnectPacket.class, DisconnectSerializer_v712.INSTANCE)
-            .updateSerializer(EditorNetworkPacket.class, EditorNetworkSerializer_v712.INSTANCE)
-            .updateSerializer(InventoryContentPacket.class, InventoryContentSerializer_v712.INSTANCE)
-            .updateSerializer(InventorySlotPacket.class, InventorySlotSerializer_v712.INSTANCE)
-            .updateSerializer(MobArmorEquipmentPacket.class, MobArmorEquipmentSerializer_v712.INSTANCE)
-            .updateSerializer(PlayerArmorDamagePacket.class, PlayerArmorDamageSerializer_v712.INSTANCE)
-            .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v712.INSTANCE)
-            .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v712.INSTANCE)
-            .updateSerializer(SetTitlePacket.class, SetTitleSerializer_v712.INSTANCE)
-            .updateSerializer(StopSoundPacket.class, StopSoundSerializer_v712.INSTANCE)
-            .registerPacket(ServerboundLoadingScreenPacket::new, ServerboundLoadingScreenSerializer_v712.INSTANCE, 312, PacketRecipient.SERVER)
-            .registerPacket(JigsawStructureDataPacket::new, JigsawStructureDataSerializer_v712.INSTANCE, 313, PacketRecipient.CLIENT)
-            .registerPacket(CurrentStructureFeaturePacket::new, CurrentStructureFeatureSerializer_v712.INSTANCE, 314, PacketRecipient.CLIENT)
-            .registerPacket(ServerboundDiagnosticsPacket::new, ServerboundDiagnosticsSerializer_v712.INSTANCE, 315, PacketRecipient.SERVER)
+            .updateSerializer(EmotePacket.class, EmoteSerializer_v729.INSTANCE)
+            .updateSerializer(InventoryContentPacket.class, InventoryContentSerializer_v729.INSTANCE)
+            .updateSerializer(InventorySlotPacket.class, InventorySlotSerializer_v729.INSTANCE)
+            .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v729.INSTANCE)
+            .updateSerializer(TransferPacket.class, TransferSerializer_v729.INSTANCE)
+            .updateSerializer(UpdateAttributesPacket.class, UpdateAttributesSerializer_v729.INSTANCE)
+            .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v729.INSTANCE)
+            .registerPacket(CameraAimAssistPacket::new, CameraAimAssistSerializer_v729.INSTANCE, 316, PacketRecipient.CLIENT)
+            .registerPacket(ContainerRegistryCleanupPacket::new, ContainerRegistryCleanupSerializer_v729.INSTANCE, 317, PacketRecipient.CLIENT)
             .build();
 
 
