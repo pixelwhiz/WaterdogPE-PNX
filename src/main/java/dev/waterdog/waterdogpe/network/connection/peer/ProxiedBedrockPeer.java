@@ -43,10 +43,12 @@ import org.cloudburstmc.protocol.bedrock.netty.codec.compression.CompressionStra
 import org.cloudburstmc.protocol.bedrock.netty.codec.encryption.BedrockEncryptionDecoder;
 import org.cloudburstmc.protocol.bedrock.netty.codec.encryption.BedrockEncryptionEncoder;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
+import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksInfoPacket;
 import org.cloudburstmc.protocol.bedrock.util.EncryptionUtils;
 
 import javax.crypto.SecretKey;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Log4j2
@@ -99,10 +101,21 @@ public class ProxiedBedrockPeer extends BedrockPeer {
         if (!this.closed.get() && !this.packetQueue.isEmpty()) {
             BedrockBatchWrapper batch = BedrockBatchWrapper.newInstance();
 
+            // Proses semua packet di queue
             BedrockPacketWrapper packet;
             while ((packet = this.packetQueue.poll()) != null) {
+                // Perbaikan: Cek ResourcePacksInfoPacket di sini!
+                if (packet.getPacket() instanceof ResourcePacksInfoPacket info) {
+                    if (info.getWorldTemplateId() == null) {
+                        info.setWorldTemplateId(UUID.randomUUID()); // Generate UUID
+                    }
+                    if (info.getWorldTemplateVersion() == null) {
+                        info.setWorldTemplateVersion("default"); // Set default version
+                    }
+                }
                 batch.getPackets().add(packet);
             }
+
             this.channel.writeAndFlush(batch);
         }
     }
