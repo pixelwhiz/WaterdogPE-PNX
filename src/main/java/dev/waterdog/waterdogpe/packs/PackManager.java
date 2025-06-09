@@ -160,8 +160,23 @@ public class PackManager {
         this.stackPacket.setGameVersion("");
 
         for (ResourcePack pack : this.packs.values()) {
-            ResourcePacksInfoPacket.Entry infoEntry = new ResourcePacksInfoPacket.Entry(pack.getPackId().toString(), pack.getVersion().toString(),
-                    pack.getPackSize(), pack.getContentKey(), "", pack.getContentKey().isEmpty() ? "" : pack.getPackId().toString(), false, false, false);
+            ResourcePacksInfoPacket.Entry infoEntry =
+                    new ResourcePacksInfoPacket.Entry(
+                            pack.getPackId(),
+                            pack.getVersion().toString(),
+                            pack.getPackSize(),
+                            pack.getContentKey(),
+                            "",
+                            pack.getContentKey().equals("") ? "" : pack.getPackId().toString(),
+                            false,
+                            false,
+                            false,
+                            pack.getContentKey().isEmpty()
+                                    ? pack.getPackId().toString()
+                                    : pack.getContentKey()
+                    );
+
+
             ResourcePackStackPacket.Entry stackEntry = new ResourcePackStackPacket.Entry(pack.getPackId().toString(), pack.getVersion().toString(), "");
             if (pack.getType().equals(ResourcePack.TYPE_RESOURCES)) {
                 this.packsInfoPacket.getResourcePackInfos().add(infoEntry);
@@ -175,6 +190,7 @@ public class PackManager {
         if (this.proxy.getConfiguration().enableEducationFeatures()) {
             this.stackPacket.getBehaviorPacks().add(EDU_PACK);
         }
+
         ResourcePacksRebuildEvent event = new ResourcePacksRebuildEvent(this.packsInfoPacket, this.stackPacket);
         this.proxy.getEventManager().callEvent(event);
     }
@@ -216,9 +232,11 @@ public class PackManager {
     }
 
     public ResourcePacksInfoPacket getPacksInfoPacket() {
+        if (this.packsInfoPacket.getWorldTemplateId() == null) {
+            this.packsInfoPacket.setWorldTemplateId(UUID.randomUUID());
+        }
         return this.packsInfoPacket;
     }
-
     public ResourcePackStackPacket getStackPacket() {
         return this.stackPacket;
     }
