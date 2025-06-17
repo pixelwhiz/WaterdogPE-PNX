@@ -1,10 +1,10 @@
-FROM openjdk:17-jdk-slim
+FROM openjdk:21-jdk-slim
 
 EXPOSE 19132/tcp
 EXPOSE 19132/udp
 
 WORKDIR /home
 
-ADD target/Waterdog.jar /home
+ADD build/libs/Waterdog-all.jar /home
 
-ENTRYPOINT ["java", "-jar", "Waterdog.jar"]
+ENTRYPOINT ["java", "-jar", "Waterdog-all.jar"]

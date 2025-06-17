@@ -101,16 +101,14 @@ public class ProxiedBedrockPeer extends BedrockPeer {
         if (!this.closed.get() && !this.packetQueue.isEmpty()) {
             BedrockBatchWrapper batch = BedrockBatchWrapper.newInstance();
 
-            // Proses semua packet di queue
             BedrockPacketWrapper packet;
             while ((packet = this.packetQueue.poll()) != null) {
-                // Perbaikan: Cek ResourcePacksInfoPacket di sini!
                 if (packet.getPacket() instanceof ResourcePacksInfoPacket info) {
                     if (info.getWorldTemplateId() == null) {
                         info.setWorldTemplateId(UUID.randomUUID()); // Generate UUID
                     }
                     if (info.getWorldTemplateVersion() == null) {
-                        info.setWorldTemplateVersion("default"); // Set default version
+                        info.setWorldTemplateVersion("default");
                     }
                 }
                 batch.getPackets().add(packet);
